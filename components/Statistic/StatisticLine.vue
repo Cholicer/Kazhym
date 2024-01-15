@@ -1,89 +1,88 @@
 <script setup>
-import { Line} from 'vue-chartjs'
-import {  ref } from "vue";
+import { Line } from "vue-chartjs";
+import { ref } from "vue";
 import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  PointElement,
-  ArcElement,
+	Chart as ChartJS,
+	Title,
+	Tooltip,
+	Legend,
+	BarElement,
+	CategoryScale,
+	LinearScale,
+	LineElement,
+	PointElement,
+	ArcElement,
 } from "chart.js";
-import { useDataStore } from '../../stores/use-Data'
+import { useDataStore } from "../../stores/use-Data";
 
-const dataStore = useDataStore()
+const dataStore = useDataStore();
 
-const firebaseUser = useFirebaseUser()
+const firebaseUser = useFirebaseUser();
 
-const userID = firebaseUser.value?.uid
+const userID = firebaseUser.value?.uid;
 
 ChartJS.register(
-  Title,
-  Tooltip,
-  Legend,
-  PointElement,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  ArcElement,
+	Title,
+	Tooltip,
+	Legend,
+	PointElement,
+	BarElement,
+	CategoryScale,
+	LinearScale,
+	LineElement,
+	ArcElement
 );
 
-const labels = ["Backlog","Todo","Inprogress","Done"]
+const labels = ["Кешіктірілді", "Берілді", "Процесте", "Орындалды"];
 
 const chartData = ref({
-    labels :  labels.map((label) => label),
-    datasets: [ 
-        { 
-            data: labels.map((label) => {
-                return dataStore.getTaskByStatus(userID, label)
-            }),
-            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FF6384', '#36A2EB'],
-            label :"Task",
-            borderColor : "white",
-            borderWidth : 1,
-            hoverBackgroundColor : "red",
-            hoverBorderColor : "red",
-            tension: 0.5,
-            fill: false,           
-        }
-    ]
-})
+	labels: labels.map(label => label),
+	datasets: [
+		{
+			data: labels.map(label => {
+				return dataStore.getTaskByStatus(userID, label);
+			}),
+			backgroundColor: [
+				"#FF6384",
+				"#36A2EB",
+				"#FFCE56",
+				"#FF6384",
+				"#36A2EB",
+			],
+			label: "Тапсырма",
+			borderColor: "white",
+			borderWidth: 1,
+			hoverBackgroundColor: "red",
+			hoverBorderColor: "red",
+			tension: 0.5,
+			fill: false,
+		},
+	],
+});
 
 const chartOptions = ref({
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-        myScale: {
-          position: "left",
-        },
-      },
-    plugins: {
-        legend: {
-            display: false,
-            position: 'bottom',
-
-        },
-        
-    },
-    backgroundColor: "white",
-
-})
-
+	responsive: true,
+	maintainAspectRatio: false,
+	scales: {
+		myScale: {
+			position: "left",
+		},
+	},
+	plugins: {
+		legend: {
+			display: false,
+			position: "bottom",
+		},
+	},
+	backgroundColor: "white",
+});
 </script>
 <template>
-    <Line
-    :chart-data="chartData"
-    :options="chartOptions"
-    style="width: 60%; height: 60%;"
-    />
+	<Line
+		:chart-data="chartData"
+		:options="chartOptions"
+		style="width: 60%; height: 60%"
+	/>
 </template>
 
-
-<style scoped>
-
-</style>
+<style scoped></style>
